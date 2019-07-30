@@ -1,10 +1,9 @@
 import datetime
 import swagger_client
-from dateutil.tz import tzlocal
 from swagger_client import ApiClient
 from swagger_client.rest import ApiException
 import json
-from pprint import pprint
+from swagger_client.models.trade_bin import TradeBin
 
 def test():
     lists = []
@@ -55,11 +54,23 @@ def history_to_file():
 
 # 将列表写入文件
 def write_to_file(lists, file_name='data.json'):
-    lists_str = '{history:' + lists.__str__() + '}'
-    lists_str = lists_str.replace('\n', '')  # 去掉空格
+    #lists_str = '{history:' + lists.__str__() + '}'
+    lists_str = lists.__str__()
+    lists_str = lists_str.replace('\n', '').replace(" ", "").replace('\'', "\"")  # 去掉空格
 
     with open(file_name, 'w') as f:
-        json.dump(lists_str, f)
+        json.dump(lists, f, indent=4, cls=ComplexEncoder)
+
+class ComplexEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime('%Y-%m-%d %H:%M')
+        if isinstance(obj, swagger_client.models.trade_bin.TradeBin):
+            # 转换成字典
+            return obj.to_dict()
+        else:
+            print('未知类型', type(obj))
+            return json.JSONEncoder.default(self, obj)
 
 
 ## 获取服务器时间列表
