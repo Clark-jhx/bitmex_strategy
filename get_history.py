@@ -4,6 +4,8 @@ from swagger_client import ApiClient
 from swagger_client.rest import ApiException
 import json
 from swagger_client.models.trade_bin import TradeBin
+import calendar
+
 
 def test():
     lists = []
@@ -16,10 +18,11 @@ def test():
     print(lists)
     write_to_file(lists)
 
+
 # 一个月的数据
-def one_month_history():
-    start_time = datetime.datetime(2019, 1, 1, 11, 59)
-    end_time = datetime.datetime(2019, 1, 31, 23, 59)
+def one_month_history(year=2019, month=1):
+    start_time = datetime.datetime(year, month, 1, 11, 59)
+    end_time = datetime.datetime(year, month, calendar.monthrange(year, month)[1], 23, 59)
     trades = []
     times = get_times()
     for time in times:
@@ -52,14 +55,16 @@ def history_to_file():
         year = time.year
         month = time.month
 
+
 # 将列表写入文件
 def write_to_file(lists, file_name='data.json'):
-    #lists_str = '{history:' + lists.__str__() + '}'
+    # lists_str = '{history:' + lists.__str__() + '}'
     lists_str = lists.__str__()
     lists_str = lists_str.replace('\n', '').replace(" ", "").replace('\'', "\"")  # 去掉空格
 
     with open(file_name, 'w') as f:
         json.dump(lists, f, indent=4, cls=ComplexEncoder)
+
 
 class ComplexEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -87,14 +92,17 @@ def get_times(start_year=2017, start_month=1, start_day=1, start_hour=11, start_
         times.append(next_time)
         var += 1
 
+
 ## 处理服务器的时间差 8天8小时
 def to_server_time(time):
     server_time = time - datetime.timedelta(days=8) - datetime.timedelta(hours=8)
     return server_time
 
+
 def to_normal_time(time):
     normal_time = time + datetime.timedelta(days=8) + datetime.timedelta(hours=8)
     return normal_time
+
 
 ## 获取时间列表
 def get_times_2(start_year=2019, start_month=7, start_day=20, start_hour=0, start_minuter=0, delta_hour=12):
@@ -140,5 +148,5 @@ def get_trade_history(time=None, count=4.0, symbol='XBTUSD', bin_size='1m'):
 
 if __name__ == '__main__':
     history_to_file()
-    #one_month_history()
-    #test()
+    # one_month_history()
+    # test()
