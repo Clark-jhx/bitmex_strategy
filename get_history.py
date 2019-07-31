@@ -68,7 +68,6 @@ def history_to_file():
         if (year != time.year) or (month != time.month):
             file_name = '{}-{}.json'.format(year, month)
             write_to_file(trades, file_name=file_name)
-            print('生成文件 {}'.format(file_name))
             trades.clear()
         print(time)
         trade = get_trade_history(time=time, count=720)
@@ -80,10 +79,7 @@ def history_to_file():
 
 # 将列表写入文件
 def write_to_file(lists, file_name='data.json'):
-    # lists_str = '{history:' + lists.__str__() + '}'
-    lists_str = lists.__str__()
-    lists_str = lists_str.replace('\n', '').replace(" ", "").replace('\'', "\"")  # 去掉空格
-
+    print('生成文件 {}'.format(file_name))
     with open(file_name, 'w') as f:
         json.dump(lists, f, indent=4, cls=ComplexEncoder)
 
