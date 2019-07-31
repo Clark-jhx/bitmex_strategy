@@ -31,10 +31,32 @@ def one_month_history(year=2019, month=1):
             trade = get_trade_history(time=time, count=720)
             reversed_list = list(reversed(trade))
             trades += reversed_list
-    file_name = '{}-{}.json'.format(start_time.year, start_time.month)
+    file_name = '{}-{}.json'.format(year, month)
     write_to_file(trades, file_name=file_name)
     pass
 
+def special_month_history():
+    one_month_history(year=2017, month=12)
+
+    one_month_history(year=2018, month=1)
+    one_month_history(year=2018, month=2)
+    one_month_history(year=2018, month=3)
+    one_month_history(year=2018, month=4)
+    one_month_history(year=2018, month=5)
+    one_month_history(year=2018, month=6)
+    one_month_history(year=2018, month=7)
+    one_month_history(year=2018, month=8)
+    one_month_history(year=2018, month=9)
+    one_month_history(year=2018, month=10)
+    one_month_history(year=2018, month=11)
+    one_month_history(year=2018, month=12)
+
+    one_month_history(year=2019, month=1)
+    one_month_history(year=2019, month=2)
+    one_month_history(year=2019, month=3)
+    one_month_history(year=2019, month=4)
+    one_month_history(year=2019, month=5)
+    one_month_history(year=2019, month=6)
 
 # 所有历史数据写入文件，以月为单位
 def history_to_file():
@@ -147,6 +169,7 @@ def get_trade_history(time=None, count=4.0, symbol='XBTUSD', bin_size='1m'):
 
 
 if __name__ == '__main__':
-    history_to_file()
+    # history_to_file()
     # one_month_history()
+    special_month_history()
     # test()
